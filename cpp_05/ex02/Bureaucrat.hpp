@@ -6,7 +6,7 @@
 /*   By: lamici <lamici@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:46:12 by lamici            #+#    #+#             */
-/*   Updated: 2023/10/12 09:52:33 by lamici           ###   ########.fr       */
+/*   Updated: 2023/10/12 11:40:48 by lamici           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <iostream>
 # include <stdexcept>
 
-class Form;
+class AForm;
 
 class	GradeTooHighException : public std::exception
 {
@@ -32,14 +32,21 @@ class	GradeTooLowException : public std::exception
 		const char *what() const throw();
 };
 
+class	FormNotSignedException : public std::exception
+{
+	public:
+		const char *what() const throw();
+};
+
 class Bureaucrat
 {
 	private:
-		const std::string	_name;
-		int 			_grade;
-		GradeTooHighException _GradeTooHighException;
-		GradeTooLowException _GradeTooLowException;
-		
+		const std::string		_name;
+		int 					_grade;
+		GradeTooHighException 	_GradeTooHighException;
+		GradeTooLowException 	_GradeTooLowException;
+		FormNotSignedException	_FormNotSignedException;
+
 	public:
 		Bureaucrat(void);
 		~Bureaucrat(void);
@@ -50,7 +57,8 @@ class Bureaucrat
 	const std::string 	getName(void) const;
 	void				increaseGrade(void);
 	void				decreaseGrade(void);
-	void				signForm(Form Form);
+	void				signForm(AForm &Form);
+	void				executeForm(const AForm &form);
 };
 
 std::ostream &operator<<(std::ostream &stream, const Bureaucrat &copy);

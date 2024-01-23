@@ -6,11 +6,12 @@
 /*   By: lamici <lamici@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:46:10 by lamici            #+#    #+#             */
-/*   Updated: 2023/10/10 15:36:59 by lamici           ###   ########.fr       */
+/*   Updated: 2023/10/12 09:52:41 by lamici           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 const char *GradeTooHighException::what() const throw()
 {

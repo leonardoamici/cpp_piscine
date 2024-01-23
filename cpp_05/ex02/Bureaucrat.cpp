@@ -6,11 +6,12 @@
 /*   By: lamici <lamici@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:46:10 by lamici            #+#    #+#             */
-/*   Updated: 2023/10/18 10:49:33 by lamici           ###   ########.fr       */
+/*   Updated: 2023/10/12 11:40:31 by lamici           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
+#include "AForm.hpp"
 
 const char *GradeTooHighException::what() const throw()
 {
@@ -20,6 +21,11 @@ const char *GradeTooHighException::what() const throw()
 const char *GradeTooLowException::what() const throw()
 {
 	return("Grade too low, defaulted to minimum grade");
+}
+
+const char *FormNotSignedException::what() const throw()
+{
+	return("Form needs to be signed before executing");
 }
 
 Bureaucrat::Bureaucrat(void)
@@ -111,5 +117,36 @@ void	Bureaucrat::decreaseGrade(void)
 	{
 		this->_grade = 150;
 		std::cout << this->_GradeTooLowException.what() << std::endl; 
+	}
+}
+
+void	Bureaucrat::signForm(AForm &Form)
+{
+	try
+	{
+		if(Form.getIsSigned())
+			std::cout << this->_name << " couldn't sign " << Form.getName() << " because it has already been signed" << std::endl;
+		else
+			Form.beSigned(*this);
+	}
+	catch (GradeTooHighException)
+	{
+		std::cout <<  this->getName() << " couldn't sign " << Form.getName() << " because his grade is insufficient" << std::endl;
+	}
+}
+
+void	Bureaucrat::executeForm(const AForm &form)
+{
+	try
+	{
+		form.execute(*this);
+	}
+	catch (GradeTooLowException)
+	{
+		std::cout << "Grade too low" << std::endl;
+	}
+	catch (FormNotSignedException)
+	{
+		std::cout << _FormNotSignedException.what() << std::endl;
 	}
 }

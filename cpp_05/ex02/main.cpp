@@ -6,52 +6,41 @@
 /*   By: lamici <lamici@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:46:15 by lamici            #+#    #+#             */
-/*   Updated: 2023/10/12 14:02:35 by lamici           ###   ########.fr       */
+/*   Updated: 2023/10/10 14:09:47 by lamici           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 int main()
 {
 	//---------------------------------------------------
 	std::cout << std::endl << "--- Constructors: --------------" << std::endl;
 
-	Bureaucrat	a("bob", -1);
+	Bureaucrat	a("Bob", -1);
 	Bureaucrat	b(a);
+	Bureaucrat	c("Claudio", 170);
 
-	Form		f1("F1", 10, 15);
-	Form		f2("F2", 0, 160);
-	Form		f3(f1);
-
-	//std::cout << b.getName() << std::endl;
-	//std::cout << b.getGrade() << std::endl;
-
-	b.increaseGrade();
-	b.decreaseGrade();
-	b.decreaseGrade();
-	b.decreaseGrade();
-	b.decreaseGrade();
-	b.increaseGrade();
+	AForm *f1 = new ShrubberyCreationForm("Mario");
+	AForm *f2 = new PresidentialPardonForm("Luigi");
+	AForm *f3 = new RobotomyRequestForm("Goomba");
 
 	//---------------------------------------------------
-	std::cout << std::endl << "--- Tests ----------------------" << std::endl;
+	std::cout << std::endl << "--- Tests: ---------------------" << std::endl;
 
-	std::cout << "f1: " << f1.getIsSigned() << std::endl;
-	b.signForm(f1);
-	std::cout << "f1: " << f1.getIsSigned() << std::endl;
+	b.executeForm(*f1);
+	b.signForm(*f1);
+	b.executeForm(*f1);
 
-	std::cout << "f1: " << f1.getIsSigned() << std::endl;
-	b.signForm(f1);
-	std::cout << "f1: " << f1.getIsSigned() << std::endl;
+	b.executeForm(*f2);
+	b.signForm(*f2);
+	b.executeForm(*f2);
 
-	std::cout << "f2: " << f2.getIsSigned() << std::endl;
-	b.signForm(f2);
-	std::cout << "f2: " << f2.getIsSigned() << std::endl;
-
-	std::cout << "f3: " << f3.getIsSigned() << std::endl;
-	b.signForm(f3);
-	std::cout << "f3: " << f3.getIsSigned() << std::endl;
+	b.signForm(*f3);
+	b.executeForm(*f3);
+	c.executeForm(*f3);
 
 	//---------------------------------------------------
 	std::cout << std::endl << "--- Bureaucrats prints: --------" << std::endl;
@@ -60,11 +49,15 @@ int main()
 
 	//---------------------------------------------------
 	std::cout << std::endl << "--- Forms prints: --------------" << std::endl;
-	std::cout << f1 << std::endl;
-	std::cout << f2 << std::endl;
+	std::cout << *f1 << std::endl;
+	std::cout << *f2 << std::endl;
+	std::cout << *f3 << std::endl;
 
 	//---------------------------------------------------
 	std::cout << std::endl << "--- Destructors: ---------------" << std::endl;
+	delete (f1);
+	delete (f2);
+	delete (f3);
 
 	return (0);
 }

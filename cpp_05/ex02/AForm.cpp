@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.cpp                                           :+:      :+:    :+:   */
+/*   AForm.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lamici <lamici@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:16:07 by lamici            #+#    #+#             */
-/*   Updated: 2023/10/12 09:56:27 by lamici           ###   ########.fr       */
+/*   Updated: 2023/10/12 11:44:11 by lamici           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "AForm.hpp"
 
-int	Form::setExecGrade(const int execGrade)
+int	AForm::setExecGrade(const int execGrade)
 {
 	try
 	{
@@ -34,7 +34,7 @@ int	Form::setExecGrade(const int execGrade)
 	}
 }
 
-int	Form::setSignGrade(const int signGrade)
+int	AForm::setSignGrade(const int signGrade)
 {
 	try
 	{
@@ -56,57 +56,67 @@ int	Form::setSignGrade(const int signGrade)
 	}
 }
 
-int	Form::getExecGrade(void) const
+void	AForm::setTarget(std::string target)
+{
+	this->_target = target;
+}
+
+int	AForm::getExecGrade(void) const
 {
 	return (this->_execGrade);
 }
 
-int	Form::getSignGrade(void) const
+std::string	AForm::getTarget(void) const
+{
+	return (this->_target);
+}
+
+int	AForm::getSignGrade(void) const
 {
 	return (this->_signGrade);
 }
 
-std::string	Form::getName(void) const
+std::string	AForm::getName(void) const
 {
 	return (this->_name);
 }
 
-bool	Form::getIsSigned(void) const
+bool	AForm::getIsSigned(void) const
 {
 	return (this->_isSigned);
 }
 
-Form::Form(void) : _name(""), _execGrade(150), _signGrade(150)
+AForm::AForm(void) : _name(""), _execGrade(150), _signGrade(150)
 {
 	std::cout << "standard Form constructor called" << std::endl;
 	_isSigned = 0;
 }
 
-Form::~Form(void)
+AForm::~AForm(void)
 {
 	std::cout << "standard Form destructor called" << std::endl;
 }
 
-Form::Form(const std::string name, const int execGrade, const int signGrade) : _name(name), _execGrade(setExecGrade(execGrade)), _signGrade(setSignGrade(signGrade))
+AForm::AForm(const std::string name, const int execGrade, const int signGrade) : _name(name), _execGrade(setExecGrade(execGrade)), _signGrade(setSignGrade(signGrade))
 {
 	std::cout << "custom Form constructor called" << std::endl;
 	_isSigned = 0;
 }
 
-Form::Form(const Form &copy)  : _name(copy._name), _execGrade(copy._execGrade), _signGrade(copy._signGrade)
+AForm::AForm(const AForm &copy)  : _name(copy._name), _execGrade(copy._execGrade), _signGrade(copy._signGrade)
 {
 	std::cout << "Form copy constructor called" << std::endl;
 	*this = copy;
 }
 
-Form &Form::operator=(const Form &copy)
+AForm &AForm::operator=(const AForm &copy)
 {
 	std::cout << "form '=' operator overload called" << std::endl;
 	this->_isSigned = copy._isSigned;
 	return (*this);
 }
 
-void	Form::beSigned(const Bureaucrat bureaucrat)
+void	AForm::beSigned(const Bureaucrat bureaucrat)
 {
 	if(this->_signGrade >= bureaucrat.getGrade())
 	{
@@ -117,7 +127,15 @@ void	Form::beSigned(const Bureaucrat bureaucrat)
 		throw this->_GradeTooLowException;
 }
 
-std::ostream &operator<<(std::ostream &stream, const Form &Form)
+void	AForm::execute(Bureaucrat const & executor) const
+{
+	if (executor.getGrade() > this->_execGrade)
+		throw this->_GradeTooLowException;
+	else if (!this->_isSigned)
+		throw this->_FormNotSignedException;
+}
+
+std::ostream &operator<<(std::ostream &stream, const AForm &Form)
 {
 	std::cout << Form.getName() << ", Signing grade: ";
 	std::cout << Form.getSignGrade() << ", Execution grade: " << Form.getExecGrade();
